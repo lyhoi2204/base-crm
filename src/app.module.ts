@@ -6,16 +6,19 @@ import configuration from './config/configuration';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MongoConfigModule } from './config/mongo.config';
 import { CoreModule } from './modules/core/core.module';
+import { PostModule } from './modules/post/post.module';
 
 @Module({
   imports: [
     //Import config
     ConfigModule.forRoot({
       load: [configuration],
+      isGlobal: true,
     }),
     MongoConfigModule,
     //Import Modules
     CoreModule,
+    PostModule,
   ],
   controllers: [AppController],
   providers: [AppService],

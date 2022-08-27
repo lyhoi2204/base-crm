@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { RegisterDto } from './dto/register.dto';
@@ -17,6 +17,10 @@ export class AuthService {
   ) {}
 
   async register(data: RegisterDto): Promise<User> {
+    const checkUser = await this.findUserByEmail(data.email);
+    if (checkUser) {
+      throw new BadRequestException('Email already exists');
+    }
     data.password = await bcrypt.hash(data.password, PASSWORD_SALT_OR_ROUNDS);
     const createdUser = new this.userModel(data);
     return createdUser.save();
@@ -39,18 +43,29 @@ export class AuthService {
   }
 
   async validateUser(email: string, password: string): Promise<any> {
-    const user = await this.findUserByEmail(email);
+    const user = await this.findUserByEmail(email, true);
     if (user && (await bcrypt.compare(password, user.password))) {
       return user;
     }
     return null;
   }
 
-  async findUserByEmail(email: string) {
+  async findUserByEmail(email: string, selectPassword = false) {
+    const selectFiled: any = {
+      _id: true,
+      name: true,
+      email: true,
+    };
+    if (selectPassword) {
+      selectFiled.password = true;
+    }
     return await this.userModel
-      .findOne({
-        email: email,
-      })
+      .findOne(
+        {
+          email: email,
+        },
+        selectFiled,
+      )
       .exec();
   }
 }

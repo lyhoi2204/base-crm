@@ -25,7 +25,6 @@ export class UserAuthGuard implements CanActivate {
       if (token.length < 2 || token[0] != 'Bearer') {
         throw new UnauthorizedException();
       }
-
       const userJwt = await this.jwtService.verify(token[1]);
       const user = await this.authService.findUserByEmail(userJwt.email);
       if (!user) {
