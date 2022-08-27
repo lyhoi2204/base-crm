@@ -8,10 +8,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { request } from 'https';
-import { UserAuthGuard } from '../core/auth/guards/user.guard';
+import { UserAuthGuard } from '../core/guards/user.guard';
 import { Role } from '../core/roles/enums/role.enum';
 import { Roles } from '../core/roles/roles.decorator';
-import { RolesGuard } from '../core/roles/roles.guards';
+import { RolesGuard } from '../core/guards/roles.guards';
 import { CreatePostDto } from './dto/post.dto';
 import { PostService } from './post.service';
 

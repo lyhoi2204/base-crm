@@ -23,7 +23,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: 1
       MONGO_INITDB_DATABASE: crm
     ports:
-      - 27017:27017
+      - 27018:27017
     volumes:
       - data:/var/lib/mongodb
     networks:
