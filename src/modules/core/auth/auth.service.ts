@@ -20,6 +20,10 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
+  /**
+   * Register user
+   * @param data
+   */
   async register(data: RegisterDto): Promise<User> {
     const checkUser = await this.findUserByEmail(data.email);
     if (checkUser) {
@@ -30,6 +34,10 @@ export class AuthService {
     return createdUser.save();
   }
 
+  /**
+   * Login
+   * @param data
+   */
   async login(data: LoginDto) {
     const user = await this.validateUser(data.email, data.password);
     if (!user) {
@@ -47,6 +55,11 @@ export class AuthService {
     };
   }
 
+  /**
+   * validate user
+   * @param email string
+   * @param password string
+   */
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.findUserByEmail(email, true);
     if (user && (await bcrypt.compare(password, user.password))) {
@@ -55,6 +68,11 @@ export class AuthService {
     return null;
   }
 
+  /**
+   * Find User by email
+   * @param email string
+   * @param selectPassword boolean
+   */
   async findUserByEmail(email: string, selectPassword = false) {
     const selectFiled: any = {
       _id: true,

@@ -12,22 +12,38 @@ export class PostService {
     private readonly authService: AuthService,
   ) {}
 
+  /**
+   * Find Post by id
+   * @param id
+   */
   async findById(id) {
     return await this.postModel
       .findOne({ _id: new mongoose.Types.ObjectId(id) })
       .populate('author');
   }
 
+  /**
+   * Find All Posts
+   */
   async findAllPost() {
     return await this.postModel.find().populate('author');
   }
 
+  /**
+   * List Posts by userId
+   * @param user
+   */
   async listMyPost(user) {
     return await this.postModel
       .find({ author: new mongoose.Types.ObjectId(user.userId) })
       .populate('author');
   }
 
+  /**
+   * Create Post
+   * @param data
+   * @param user
+   */
   async cretePost(data: CreatePostDto, user) {
     const postCreated = new this.postModel({
       ...data,
@@ -36,6 +52,12 @@ export class PostService {
     return await postCreated.save();
   }
 
+  /**
+   * Update Post
+   * @param id
+   * @param data
+   * @param user
+   */
   async updatePost(id, data, user) {
     const post = await this.postModel
       .findOne({
@@ -53,6 +75,11 @@ export class PostService {
     });
   }
 
+  /**
+   * Delete Post
+   * @param id
+   * @param user
+   */
   async deletePost(id, user) {
     return this.postModel
       .findOne({
