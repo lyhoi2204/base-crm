@@ -28,6 +28,7 @@ export class AuthController {
     return this.authService.login(dataLogin);
   }
 
+  @ApiTags('Auth')
   @Get('/me')
   @UseGuards(UserAuthGuard)
   getMe(@Request() req) {
