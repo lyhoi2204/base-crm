@@ -4,9 +4,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb://root:1@db:27017/crm?authSource=admin&readPreference=primary',
-    ),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get('database.host'),
+      }),
+      inject: [ConfigService],
+    }),
   ],
 })
 export class MongoConfigModule {}
