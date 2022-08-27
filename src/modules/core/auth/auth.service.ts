@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { RegisterDto } from './dto/register.dto';
@@ -37,6 +41,7 @@ export class AuthService {
       userId: user._id,
       roles: user.isAdmin ? Role.Admin : Role.User,
     };
+    console.log(user, payload);
     return {
       access_token: this.jwtService.sign(payload),
     };
@@ -55,6 +60,7 @@ export class AuthService {
       _id: true,
       name: true,
       email: true,
+      isAdmin: true,
     };
     if (selectPassword) {
       selectFiled.password = true;

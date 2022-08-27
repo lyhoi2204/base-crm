@@ -1,9 +1,12 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Injectable,
+  Param,
   Post,
+  Put,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -37,5 +40,25 @@ export class PostController {
   @Roles(Role.Admin)
   async create(@Body() data: CreatePostDto, @Request() req) {
     return this.postService.cretePost(data, req.user);
+  }
+
+  @Get(':id')
+  @UseGuards(UserAuthGuard)
+  async detail(@Param('id') id) {
+    return await this.postService.findById(id);
+  }
+
+  @Put(':id')
+  @UseGuards(UserAuthGuard, RolesGuard)
+  @Roles(Role.Admin)
+  async update(@Body() data: CreatePostDto, @Request() req, @Param('id') id) {
+    return this.postService.updatePost(id, data, req.user);
+  }
+
+  @Delete(':id')
+  @UseGuards(UserAuthGuard, RolesGuard)
+  @Roles(Role.Admin)
+  async delete(@Request() req, @Param('id') id) {
+    return this.postService.deletePost(id, req.user);
   }
 }
