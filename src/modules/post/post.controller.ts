@@ -15,7 +15,7 @@ import { UserAuthGuard } from '../core/guards/user.guard';
 import { Role } from '../core/roles/enums/role.enum';
 import { Roles } from '../core/roles/roles.decorator';
 import { RolesGuard } from '../core/guards/roles.guards';
-import { CreatePostDto } from './dto/post.dto';
+import { CreatePostDto, UpdatePostDto } from './dto/post.dto';
 import { PostService } from './post.service';
 
 @Controller('/api/v1/posts')
@@ -51,7 +51,7 @@ export class PostController {
   @Put(':id')
   @UseGuards(UserAuthGuard, RolesGuard)
   @Roles(Role.Admin)
-  async update(@Body() data: CreatePostDto, @Request() req, @Param('id') id) {
+  async update(@Body() data: UpdatePostDto, @Request() req, @Param('id') id) {
     return this.postService.updatePost(id, data, req.user);
   }
 

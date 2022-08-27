@@ -12,3 +12,15 @@ export class CreatePostDto {
   @IsNotEmpty()
   description: string;
 }
+
+export class UpdatePostDto {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  title: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  description: string;
+}
