@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  api:
+    container_name: api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    command: npm run start:dev
+    volumes:
+      - ./src:/var/www/app/src
+      - ./.env:/var/www/app/.env
+    networks:
+      - crm_network
+
+  db:
+    image: mongo:4.2
+    container_name: db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 1
+      MONGO_INITDB_DATABASE: crm
+    ports:
+      - 27017:27017
+    volumes:
+      - data:/var/lib/mongodb
+    networks:
+      - crm_network
+networks:
+  crm_network:
+    driver: bridge
+
+volumes:
+  data:
